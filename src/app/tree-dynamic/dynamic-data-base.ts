@@ -14,6 +14,14 @@ export class DynamicDatabase implements OnInit {
   //   ['Web Client', ['j', 'k', 'l']]
   // ]);
 
+  //  { name: 'Tribe', id: 'A' },
+  // { name: 'Mesila', id: 'B' },
+  // { name: 'Rest', id: 'C' },
+  // { name: 'Web Client', id: 'D' },
+  // { name: 'Main Frame', id: 'E' },
+  // { name: 'WSO2', id: 'E' },
+  // { name: 'Splunk', id: 'E' }
+
   dataMap = new Map<string, { name: string; status: string; isDuplicate }[]>([
     [
       'Tribe',
@@ -30,6 +38,46 @@ export class DynamicDatabase implements OnInit {
         { name: 'a', status: 'success', isDuplicate: false },
         { name: 'f', status: 'success', isDuplicate: false }
       ]
+    ],
+    [
+      'Rest',
+      [
+        { name: 'd', status: 'success', isDuplicate: false },
+        { name: 'a', status: 'success', isDuplicate: false },
+        { name: 'f', status: 'success', isDuplicate: false }
+      ]
+    ],
+    [
+      'Web Client',
+      [
+        { name: 'd', status: 'success', isDuplicate: false },
+        { name: 'a', status: 'success', isDuplicate: false },
+        { name: 'f', status: 'success', isDuplicate: false }
+      ]
+    ],
+    [
+      'Main Frame',
+      [
+        { name: 'd', status: 'success', isDuplicate: false },
+        { name: 'a', status: 'success', isDuplicate: false },
+        { name: 'f', status: 'success', isDuplicate: false }
+      ]
+    ],
+    [
+      'WSO2',
+      [
+        { name: 'd', status: 'success', isDuplicate: false },
+        { name: 'a', status: 'success', isDuplicate: false },
+        { name: 'f', status: 'success', isDuplicate: false }
+      ]
+    ],
+    [
+      'Splunk',
+      [
+        { name: 'd', status: 'success', isDuplicate: false },
+        { name: 'a', status: 'success', isDuplicate: false },
+        { name: 'f', status: 'success', isDuplicate: false }
+      ]
     ]
   ]);
 
@@ -40,11 +88,7 @@ export class DynamicDatabase implements OnInit {
 
   /** Initial data from database */
   initialData(permissionData): DynamicFlatNode[] {
-    // console.log(this.dataMap);
     this.rootLevelNodes = permissionData;
-    this.findChild({ name: 'a', status: 'success', isDuplicate: false });
-
-    this.rootLevelNodes.forEach(parent => {});
     return this.rootLevelNodes.map(name => new DynamicFlatNode(name, 0, true));
   }
 
@@ -60,21 +104,5 @@ export class DynamicDatabase implements OnInit {
 
   isExpandable(node: string): boolean {
     return this.dataMap.has(node);
-  }
-
-  findChild(node) {
-    let childArr = [];
-    this.rootLevelNodes.forEach(parent => {
-      let currentChildren = this.dataMap.get(parent);
-      currentChildren.forEach(x => {
-        let ind = childArr.indexOf(x.name);
-        x.isDuplicate = ind !== -1;
-
-        // console.log(ind);
-        // (node.isDuplicate = x.name == node.name)
-        // console.log(x);
-        childArr.push(x.name);
-      });
-    });
   }
 }

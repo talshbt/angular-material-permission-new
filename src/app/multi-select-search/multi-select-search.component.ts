@@ -40,6 +40,7 @@ export class MultiSelectSearchComponent implements OnInit {
 
   change(event: { isUserInput: any; source: { value: any; selected: any } }) {
     if (event.isUserInput) {
+      
       this.selectedPermissions.push(event.source.value.name);
       this.permissionService.sendPermission(this.selectedPermissions);
     }

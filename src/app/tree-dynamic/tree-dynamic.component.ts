@@ -22,9 +22,10 @@ export class TreeDynamicComponent implements OnInit {
       this.isExpandable
     );
     this.dataSource = new DynamicDataSource(this.treeControl, this.database);
-    this.dataSource.data = this.database.initialData(['Tribe', 'Mesila']);
+    this.dataSource.data = this.database.initialData([]);
 
     this.permissionService.getPermission().subscribe(permissionData => {
+      console.log(permissionData);
       this.dataSource.data = this.database.initialData(permissionData);
     });
   }
@@ -48,6 +49,8 @@ export class TreeDynamicComponent implements OnInit {
   hasChild = (_: number, _nodeData: DynamicFlatNode) => _nodeData.expandable;
 
   checkAllParentsSelection(node: DynamicFlatNode): void {
+    console.log(node);
+
     let parent: DynamicFlatNode | null = this.getParentNode(node);
     while (parent) {
       this.checkRootNodeSelection(parent);
@@ -94,17 +97,21 @@ export class TreeDynamicComponent implements OnInit {
 
   descendantsAllSelected(node: DynamicFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
-
     const descAllSelected =
       descendants.length > 0 &&
       descendants.every(child => {
         return this.checklistSelection.isSelected(child);
       });
+
     return descAllSelected;
   }
 
   descendantsPartiallySelected(node: DynamicFlatNode): boolean {
     const descendants = this.treeControl.getDescendants(node);
+    // if (node.isLoading) {
+    //   console.log(node);
+    // }
+
     const result = descendants.some(child =>
       this.checklistSelection.isSelected(child)
     );
@@ -114,7 +121,6 @@ export class TreeDynamicComponent implements OnInit {
 
   todoItemSelectionToggle(node: DynamicFlatNode): void {
     this.checklistSelection.toggle(node);
-    //console.log(node);
     const descendants = this.treeControl.getDescendants(node);
 
     this.checklistSelection.isSelected(node)
@@ -131,7 +137,6 @@ export class TreeDynamicComponent implements OnInit {
     this.dataSource.data.forEach(node => {
       const descendants = this.treeControl.getDescendants(node);
       if (descendants.length && parent.item !== node.item) {
-        
         descendants.forEach(child => {
           if (child.item === selectedNode.item) {
             this.checklistSelection.toggle(child);
